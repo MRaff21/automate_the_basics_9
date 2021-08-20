@@ -37,3 +37,32 @@ import os
 #os.chdir('/etc/')
 #print(Path.cwd())
 # ------------------------- #
+
+
+# Honestly more methods they go through...honestly seems like this is pretty easy stuff to just look up online. Gonna give it two more chapters then go from there.
+# --------------------------# 
+#p = Path('/home/lab/')
+#p.anchor
+#'/'
+#p.parent
+#PosixPath('/home')
+#p.name
+#'lab'
+# p.stem
+#'lab'
+#p.suffix
+#''
+#p.drive
+#''
+
+# ---------------------- #
+
+# Lets start with some of the questions on and see if I can answer them I think I should be fine...if not just go back through the chapter.
+
+# https://automatetheboringstuff.com/2e/chapter9/
+
+
+
+
+
+
