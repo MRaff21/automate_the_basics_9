@@ -67,4 +67,19 @@ for i in range(13):
     else:
         # This will update the index and pick another random number between 0 and the lenth of the current list
         option = random.randint(0, len(x) - 1)
-print(prov)
+
+x = prov.values()
+
+for key in prov:
+    x = prov.get(key)
+    random.shuffle(x)
+
+# ------------- # This will shuffle the dirtionary around list is not done here
+keys = list(prov.keys())
+random.shuffle(keys)
+
+newDir = dict()
+for key in keys:
+    newDir.update({key: prov[key]})
+
+print(newDir)

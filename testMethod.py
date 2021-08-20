@@ -9,6 +9,11 @@ dict = {
 	"Answer" : ['Ottawa']
 }
 
+
+
+
+
+
 lists = ["Ottawa", "Vic", "Hali", "Edmonton"]
 pick = random.choice(list)
 check = 0
