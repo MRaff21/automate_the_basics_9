@@ -38,25 +38,28 @@ x = list(prov)
 d = {}
 
 
-def populate_list(dictionary, listOfCity, indexOfOption, CityinIndex):
-    pick = random.choice(listOfCity)
+def populate_list(dictionary):
+    result = []
+    pick = random.choice(x)
     check = 0
-    while check != 3:
-        if pick in dictionary.get(indexOfOption[CityinIndex]):
+    for i in range(4):
+        if pick in dictionary.get(x[option]):
             print("Item was not added because its in the list already")
             pick = random.choice(city_list)
         else:
             check = check + 1
-            dictionary.get(indexOfOption[CityinIndex]).append(pick)
-            pick = random.choice(listOfCity)
 
+            dictionary.get(x[option]).append(pick)
+            pick = random.choice(city_list)
+            result.append(pick)
+    return result
 # loops 13 times 
 for i in range(13):
 
     # This will update the dict -> x is a list and option is the index of that list
 
-    d.update({x[option]: prov.get(x[option])})
-    d.update({x[option]: populate_list(d, city_list, x, option)})
+    d = prov.copy()
+    d.update({x[option]: populate_list(d)})
 # We remove the index that has been put into the list so we never get a duplicate.
     x.pop(option)
 
@@ -67,4 +70,4 @@ for i in range(13):
     else:
         # This will update the index and pick another random number between 0 and the lenth of the current list
         option = random.randint(0, len(x) - 1)
-print(prov)
+print(d)
