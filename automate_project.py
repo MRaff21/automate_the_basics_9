@@ -4,6 +4,7 @@ import random
 
 #
 
+
 prov = {
     "Yukon": ["Whitehorse"],
     "Northwest Territories": ["Yellowknife"],
@@ -23,51 +24,30 @@ prov = {
 city_list = ["Whitehorse", "Yellowknife", "Iqaluit", "Victoria", "Edmonton", "Regina", "Winnipeg", "Ottawa",
              "Quebec City", "Fredericton", "Charlottetown", "Halifax", "Saint John's"]
 
-# inital set of questions
-num_questions = len(prov)
+# this entire method makes much of the rest of the code redundent. Implement this into the main branch and then shuffle everything.
+def populate_list(dict_here):
+    for key in dict_here:
+        result = []
 
-# picks number between 1-13
-option = random.randint(0, num_questions - 1)
+        result.append((dict_here.get(key))[0])
 
-# subtract 1 from the list so next rotation it will be 1-12
-num_questions = num_questions - 1
-
-# --------------- # Puts all the keys in an index so we can pick the index from the random number
-x = list(prov)
-
-d = {}
-
-
-def populate_list(dictionary):
-    result = []
-    pick = random.choice(x)
-    check = 0
-    for i in range(4):
-        if pick in dictionary.get(x[option]):
-            print("Item was not added because its in the list already")
+        for i in range(3):
             pick = random.choice(city_list)
-        else:
-            check = check + 1
+            while True:
+                if pick in result:
+                    pick = random.choice(city_list)
+                    print("here btw")
+                else:
+                    result.append(pick)
+                    break
+            else:
+                result.append(pick)
+        dict_here.update({key: result})
+    return dict_here
 
-            dictionary.get(x[option]).append(pick)
-            pick = random.choice(city_list)
-            result.append(pick)
-    return result
-# loops 13 times 
-for i in range(13):
+dict = prov.copy()
 
-    # This will update the dict -> x is a list and option is the index of that list
 
-    d = prov.copy()
-    d.update({x[option]: populate_list(d)})
-# We remove the index that has been put into the list so we never get a duplicate.
-    x.pop(option)
-
-    # This is for the final loop as it will do one last loop after the list is empty and will exit out of the loop
-	# before we hit an error (probably changet his to while loop before submitting)
-    if (len(x)) == 0:
-        break
-    else:
-        # This will update the index and pick another random number between 0 and the lenth of the current list
-        option = random.randint(0, len(x) - 1)
-print(d)
+populate_list(dict)
+print(prov)
+print(dict)

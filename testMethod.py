@@ -68,13 +68,16 @@ def populate_list(dict_here):
 		result.append((dict_here.get(key))[0])
 
 		for i in range(3):
-
 			pick = random.choice(city_list)
-
-			result.append(pick)
-
-
-
+			for j in range(len(result)):
+				if (pick == result[j]):
+					pick = random.choice(city_list)
+					print("here btw")
+				else :
+					result.append(pick)
+					break
+			else:
+				result.append(pick)
 		dict_here.update({key: result})
 	return dict_here
 
