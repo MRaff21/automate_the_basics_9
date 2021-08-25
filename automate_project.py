@@ -2,9 +2,7 @@ import json
 import subprocess
 import os
 import random
-import pprint
 
-#
 
 prov = {
     "Yukon": ["Whitehorse"],
@@ -22,94 +20,63 @@ prov = {
     "Newfoundland and Labrador": ["Saint John's"]
 }
 
-count = 0
-
 city_list = ["Whitehorse", "Yellowknife", "Iqaluit", "Victoria", "Edmonton", "Regina", "Winnipeg", "Ottawa",
              "Quebec City", "Fredericton", "Charlottetown", "Halifax", "Saint John's"]
 
-# ------------------------# Helper Methods
 
-# This method here write to a file but its not correct yet. Its currently writing
-# the same file over and over. It should
-def write_to_file():
-    write_to_file.counter += 1
-    subprocess.run(["touch", "/home/manfred/Documents/dumpFolder/Test_" + str(write_to_file.counter) + ".txt"])
-    formatted_text = pprint.pformat(prov)
-    openfile = open("/home/manfred/Documents/dumpFolder/Test_" + str(write_to_file.counter) + ".txt", "a")
-    openfile.write(formatted_text)
+def shuffle(dictionary_shuffle):
+    for key in dictionary_shuffle:
+        lst = dictionary_shuffle.get(key)
+        random.shuffle(lst)
+
+    keys = list(dictionary_shuffle.keys())
+    random.shuffle(keys)
+
+    shuffled_dict = {}
+
+    for key in keys:
+        shuffled_dict.update({key: dictionary_shuffle[key]})
+
+    return shuffled_dict
+
+
+global count
+count = 1
+
+
+def write_to_file(anythingHere):
+    global count
+
+    subprocess.run(["touch", "/home/lab/Documents/dumpFolder/Test_" + str(count) + ".txt"])
+
+    openfile = open("/home/lab/Documents/dumpFolder/Test_" + str(count) + ".txt", "a")
+    openfile.write(json.dumps(shuffle(anythingHere)))
     openfile.close()
-write_to_file.counter = 0
+    count += 1
 
 
-# This method will populate the lists inside the dictionary...im like 90% sure this can be done
-# better considering the I am having to index my way through the dictionary instead of just looping
-# through the key value pairs. That is probably why it was not working originally (check later use for example)
+def populate_list(dict_here):
+    for key in dict_here:
+        result = []
 
-def populate_list(dictionary, listOfCity, indexOfOption, CityinIndex):
-    pick = random.choice(listOfCity)
-    check = 0
-    while check != 3:
-        if pick in dictionary.get(indexOfOption[CityinIndex]):
-            print("Item was not added because its in the list already")
+        result.append((dict_here.get(key))[0])
+
+        for i in range(3):
             pick = random.choice(city_list)
-        else:
-            check = check + 1
-            dictionary.get(indexOfOption[CityinIndex]).append(pick)
-            pick = random.choice(listOfCity)
-
-def file_creation():
-
-
-    # Inital set of questions
-    for k in range(1):
-        num_questions = len(prov)
-
-        # picks number between 1-13
-        option = random.randint(0, num_questions - 1)
-
-        # subtract 1 from the list so next rotation it will be 1-12
-        num_questions = num_questions - 1
-
-        # --------------- # Puts all the keys in an index so we can pick the index from the random number
-        x = list(prov)
-
-        d = {}
-
-
-        # loops 13 times
-        for i in range(13):
-
-            # This will update the dict -> x is a list and option is the index of that list
-
-            d.update({x[option]: prov.get(x[option])})
-            d.update({x[option]: populate_list(d, city_list, x, option)})
-            # We remove the index that has been put into the list so we never get a duplicate.
-            x.pop(option)
-
-            # This is for the final loop as it will do one last loop after the list is empty and will exit out of the loop
-            # before we hit an error (probably changet his to while loop before submitting)
-            if (len(x)) == 0:
-                break
+            while True:
+                if pick in result:
+                    pick = random.choice(city_list)
+                else:
+                    result.append(pick)
+                    break
             else:
-                # This will update the index and pick another random number between 0 and the lenth of the current list
-                option = random.randint(0, len(x) - 1)
-
-        x = prov.values()
-
-        for key in prov:
-            x = prov.get(key)
-            random.shuffle(x)
-
-        # ------------- # This will shuffle the dirtionary around list is not done here
-        keys = list(prov.keys())
-        random.shuffle(keys)
-
-        newDir = dict()
-
-        for key in keys:
-            newDir.update({key: prov[key]})
-
-        write_to_file()
+                result.append(pick)
+        dict_here.update({key: result})
+    return dict_here
 
 
-file_creation()
+for i in range(13):
+    dict = {}
+    dict = prov.copy()
+    populate_list(dict)
+    write_to_file(dict)

@@ -1,5 +1,5 @@
 import random
-
+import subprocess
 
 dict = {
 	"Ontario" : "Ottawa",
@@ -53,5 +53,7 @@ ShuffledProv = dict()
 for key in keys:
 	ShuffledProv.update({key: prov[key]})
 
-print("\nDic after shuffling")
-print(ShuffledProv)
+#print("\nDic after shuffling")
+#print(ShuffledProv)
+
+subprocess.run("ls" "/home/")
