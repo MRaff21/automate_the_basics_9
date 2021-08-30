@@ -1,8 +1,8 @@
 #!python3
 #mcb.pyw
 
-# Usage: py.exe mcb.pyw save <keyword> - Saves clipboard to keyword.
-#        py.exe mcb.pyw <keyword> - Loads keyword to clipboard.
+# Usage: py.exe mcb.pyw save <keyword> - Saves clipboard to option.
+#        py.exe mcb.pyw <keyword> - Loads option to clipboard.
 #        py.exe mcb.pyw list - Loads all keywords to clipboard.
 
 import shelve, pyperclip, sys
@@ -12,10 +12,6 @@ import shelve, pyperclip, sys
 # --- use this object to save output
 #mcbShelf = shelve.open('/home/lab/Manfred/dumpFolder/mcb')
 mcbShelf = shelve.open('/home/lab/Documents/dumpFolder/mcb')
-
-
-
-
 
 # --- this combination will create a var that stores the current item ready on the clipboard
 currentPaste = pyperclip.paste()
@@ -28,35 +24,36 @@ test_dict = {}
 
 #print('Number of arguments:', len(sys.argv), 'arguments')
 print('Argument list:', str(sys.argv))
-keyword = sys.argv[1]
+option = sys.argv[1]
 
-if len(sys.argv) > 3 :
+
+if len(sys.argv) > 3:
     print('script failed cannot exceed 3 arguments')
 else:
 
-    if keyword == "save":
-        print("Item was saved")
-        print("Key would be: " + sys.argv[2])
+    if option == "save":
+        keyword = sys.argv[2]
+        print("Item will be saved")
+
+        print("Keyword", keyword, "was saved for the key ")
+        mcbShelf[keyword] = currentPaste
         print("Item that would have been saved is: " + currentPaste)
-        test_dict[sys.argv[2]] = currentPaste
+        #test_dict[keyword] = currentPaste
 
-
-
-        mcbShelf['key1'] = test_dict
-
-
-
-    elif keyword == "list":
+    elif option == "list":
         print("List all saved keys")
+        for key in mcbShelf:
+            print(key)
+
     else:
-        print("new key added to dictionary")
-        print("This argument would be now part of keys " + sys.argv[1])
+        print("loading")
+        for key in mcbShelf:
+            if key == sys.argv[1]:
+                print("Loading value to clipboard")
+                pyperclip.copy(mcbShelf[key])
+                currentPaste = pyperclip.paste()
+                print(currentPaste)
 
-try:
-    existing = mcbShelf['key1']
-finally:
-    mcbShelf.close()
 
-print(existing)
 #TODO: Save clipboard content.
 #TODO: List keywords and load content
