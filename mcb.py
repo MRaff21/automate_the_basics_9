@@ -5,7 +5,7 @@
 #        py.exe mcb.pyw <keyword> - Loads option to clipboard.
 #        py.exe mcb.pyw list - Loads all keywords to clipboard.
 
-import shelve, pyperclip, sys
+import shelve, pyperclip, sys, clipboard
 # https://python.plainenglish.io/shelve-saving-the-state-of-objects-in-python-bc96e2633226
 # and this https://pymotw.com/2/shelve/
 # look at this link here to help figure this out gonna figure out the sys and pyperclip first
@@ -14,7 +14,9 @@ import shelve, pyperclip, sys
 mcbShelf = shelve.open('/home/lab/Documents/dumpFolder/mcb')
 
 # --- this combination will create a var that stores the current item ready on the clipboard
-currentPaste = pyperclip.paste()
+
+currentPaste = clipboard.paste()
+print(currentPaste)
 
 # --- this line would copy that same item back. So If you copy something else you can call spam and it will bring it
 # back to the front of the clipboard (useful for later im sure)
@@ -47,12 +49,13 @@ else:
 
     else:
         print("loading")
-        for key in mcbShelf:
-            if key == sys.argv[1]:
-                print("Loading value to clipboard")
-                pyperclip.copy(mcbShelf[key])
-                currentPaste = pyperclip.paste()
-                print(currentPaste)
+        if sys.argv[1] in mcbShelf:
+            print("Loading value to clipboard")
+            pyperclip.copy(mcbShelf[sys.argv[1]])
+            print(pyperclip.paste())
+
+    mcbShelf.close()
+
 
 
 #TODO: Save clipboard content.
